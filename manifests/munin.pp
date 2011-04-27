@@ -3,31 +3,21 @@ class exim::munin {
     'debian' => 'Debian-exim',
     default => 'exim'
   }
-  file{'/var/lib/munin/plugin-state/exim_mailstats':
-    ensure => present,
-    replace => false,
-    require => Package['exim'],
-    owner => nobody, group => $group, mode => 0640;
+
+	file { '/var/lib/munin/plugin-state/exim_mailstats':
+		ensure  => present,
+		replace => false,
+		owner   => nobody,
+		group   => $group,
+		mode    => 0640,
+		require => Class['exim::install']
   }
-  $logdir = $operatingsystem ? {
-    'debian' => '/var/log/exim4',
-    default => '/var/log/exim'
-  }
-  $logfile = $operatingsystem ? {
-    'debian' => 'mainlog',
-    default => 'main.log'
-  }
-  $stats_group = $operatingsystem ? {
-    'debian' => 'adm',
-    default => 'exim'
-  }
-  munin::plugin{
-    'exim_mailstats':
-      config => "env.logdir ${logdir}
-env.logname ${logfile}
-group ${stats_group}";
-    'exim_mailqueue':
-      config => "env.exim /usr/sbin/exim
-group $group";
-  }
+
+  munin::plugin { 'exim_mailstats':
+		config => "env.logdir /var/log/${exim::params::basename}\nenv.logname ${exim::params::logfile}\ngroup ${exim::params::stats_group}"
+	}
+
+	munin::plugin { 'exim_mailqueue':
+		config => "env.exim /usr/sbin/exim\ngroup ${group}"
+	}
 }
