@@ -2,7 +2,8 @@
 #
 #
 class exim::config {
-	file { "${exim::params::configdir}/exim.conf":
+  require exim::params
+	file { "${exim::params::configdir}/${exim::params::basename}.conf":
 		source  => [ "puppet:///modules/site-exim/${fqdn}/exim.conf",
 								 "puppet:///modules/site-exim/${exim_type}/exim.conf",
 		             "puppet:///modules/site-exim/exim.conf",
