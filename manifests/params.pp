@@ -26,15 +26,18 @@ class exim::params {
 		'false' => false,
 		default => false
 	}
+
+  if ($greylist or $mysql or $pgsql) {
+    $feature_version = 'heavy'
+  } else {
+    $feature_version = 'light'
+  }
 	
 	# This option only applies to Debian/Ubuntu
 	$daemon_weight = $exim_daemon_weight ? {
 		'light' => 'light',
 		'heavy' => 'heavy',
-		default => ($greylist or $mysql or $pgsql) ? {
-			true  => 'heavy',
-			false => 'light'
-		}
+		default => 'heavy'
 	}
 	
 	$ports = $exim_ports ? {
