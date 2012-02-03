@@ -2,7 +2,7 @@
 #
 #
 class exim::params {
-	$basename = $operatingsystem ? {
+	$basename = $::operatingsystem ? {
 		/(?i)(Debian|Ubuntu)/ => 'exim4',
 		/(?i)(RedHat|CentOS)/ => 'exim'
 	}
@@ -57,12 +57,12 @@ class exim::params {
 		default => true
 	}
 
-	$logfile = $operatingsystem ? {
+	$logfile = $::operatingsystem ? {
 		/(?i)(Debian|Ubuntu)/ => 'mainlog',
 		/(?i)(RedHat|CentOS)/ => 'main.log'
   }
 
-  $stats_group = $operatingsystem ? {
+  $stats_group = $::operatingsystem ? {
 		/(?i)(Debian|Ubuntu)/ => 'adm',
 		/(?i)(RedHat|CentOS)/ => 'exim'
   }

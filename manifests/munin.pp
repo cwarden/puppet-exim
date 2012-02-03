@@ -1,5 +1,5 @@
 class exim::munin {
-  $group = $operatingsystem ? {
+  $group = $::operatingsystem ? {
     'debian' => 'Debian-exim',
     default => 'exim'
   }
